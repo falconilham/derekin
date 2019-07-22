@@ -35,22 +35,23 @@ class Login extends React.Component {
       <View style={styles.container}>
         {this.state.state_login == 1 ? (
             <View style={styles.item_container}>
-              <Text style={{color: "white", fontSize: 16}}>Login</Text>
+              <Text style={styles.text_login}>Login</Text>
               <TextInput style={styles.TextInput} placeholder="Input Nama Anda" onChangeText={(nama) => this.setState({nama})} />
               <TextInput style={styles.TextInput} placeholder="Input Password Anda" secureTextEntry onChangeText={(password) => this.setState({password})} />
-              <View style={{flexDirection: "row", width: "50%", display: "flex", justifyContent: "space-around"}}>
+              <View style={styles.container_button}>
                 <Button style={styles.buttonLogin} title="login" color="rgb(251, 218, 0)" onPress={() => this.cekUser()}/>
                 <Button style={styles.buttonLogin} title="Daftar" color="rgb(251, 218, 0)" onPress={() => this.setState({state_login: 0})}/>
               </View>
             </View>
           ):(
             <View style={styles.item_container}>
-              <Text style={{color: "white", fontSize: 16}}>Daftar</Text>
+              <Text style={styles.text_login}>Daftar</Text>
               <TextInput style={styles.TextInput} placeholder="Input Nama Anda" onChangeText={(nama_daftar) => this.setState({nama_daftar})} />
               <TextInput style={styles.TextInput} placeholder="Input Email Anda" onChangeText={(email_daftar) => this.setState({email_daftar})} />
               <TextInput style={styles.TextInput} placeholder="Input Password Anda" secureTextEntry onChangeText={(password_daftar) => this.setState({password_daftar})} />
               <TextInput style={styles.TextInput} placeholder="Re Enter Password" secureTextEntry onChangeText={(password_daftar) => this.setState({password_daftar})} />
-              <Text style={{color: "white", fontSize: 13}}>Sudah Punya Akun ? {this.state.nama}</Text>
+              <Button style={{width: "30%", borderRadius: 15, marginVertical: 10}} title="Daftar" color="rgb(251, 218, 0)"/>
+              <Text style={{color: "white", fontSize: 13, marginVertical: 10}}>Sudah Punya Akun ? {this.state.nama}</Text>
               <Button style={{width: "30%", borderRadius: 15}} title="Login" color="rgb(251, 218, 0)" onPress={() => this.setState({state_login: 1})}/>
             </View>
           )
@@ -79,11 +80,21 @@ const styles = StyleSheet.create({
     height: 40, 
     backgroundColor: "white",
     marginVertical: 5,
-    borderRadius: 7
+    borderRadius: 2
+  },
+  container_button:{
+    flexDirection: "row", 
+    width: "50%", 
+    display: "flex", 
+    justifyContent: "space-around"
   },
   buttonLogin:{
     borderRadius: 15,
     margin: 10
+  },
+  text_login:{
+    color: "white", 
+    fontSize: 16
   }
 });
 
