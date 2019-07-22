@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import React, { Component } from "react";
 import { StyleSheet, View, Text, Image, TextInput, Button } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
