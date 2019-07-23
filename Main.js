@@ -1,7 +1,7 @@
+/* eslint-disable prettier/prettier */
 import React, { Component } from "react";
 import { StyleSheet, View, Text, Image, TextInput, Button } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-
 
 export default class Main extends React.Component {
     constructor(props){
@@ -26,9 +26,8 @@ export default class Main extends React.Component {
         return(
             <View style={styles.container}>
                 <ScrollView>
-                    
+                    <Text>{this.state.nama}</Text>
                 </ScrollView>
-                <Text>{this.state.nama}</Text>
             </View>
         )
     }
