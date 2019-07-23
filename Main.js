@@ -7,7 +7,7 @@ export default class Main extends React.Component {
     constructor(props){
         super(props)
         this.state = {
-            nama: this.props.navigation.state.params.nama,
+            email: this.props.navigation.state.params.email,
             latitude: null,
             longitude: null,
             error:null,
@@ -26,7 +26,7 @@ export default class Main extends React.Component {
         return(
             <View style={styles.container}>
                 <ScrollView>
-                    <Text>{this.state.nama}</Text>
+                    <Text>{this.state.email}</Text>
                 </ScrollView>
             </View>
         )

@@ -4,6 +4,8 @@ import React, { Component } from "react";
 import { StyleSheet, View, Text, Image, TextInput, Button, ActivityIndicator, Picker } from "react-native";
 import { createStackNavigator, createAppContainer } from "react-navigation";
 import Main from './Main';
+import * as firebase from "firebase";
+//import firebase from './react-native-firebase';
 import { ScrollView } from "react-native-gesture-handler";
 
 class Login extends React.Component {
@@ -16,48 +18,81 @@ class Login extends React.Component {
       email_daftar: "",
       password_daftar: "",
       re_password: "",
+      alamat:"",
       state_login: 1,
       condition_user: "",
       condition_pass: "",
       pilihan: ["Siapa Nama Guru Favorit Anda","Siapa Peliharaan pertama anda"],
       hasil_pilihan: "",
-      jawaban_pilihan: ""
+      jawaban_pilihan: "",
+      errorMessage: null,
+      color: "rgb(251, 218, 0)",
+      loading_login: "Login",
+      loading_daftar: "Daftar",
+      notification: ""
     };
   }
 
+  UNSAFE_componentWillMount = () => {
+    const firebaseConfig = {
+      apiKey: "AIzaSyAdOYxRpefL-O9Dqy7P_D9Ja4fBNtuunes",
+      authDomain: "derekin-23fce.firebaseapp.com"
+    }
+
+    firebase.initializeApp(firebaseConfig);
+  }
+
   cekUser = () => {
-    if(this.state.nama == "ilham" && this.state.password == "test"){
-      this.props.navigation.navigate('Main', {nama: this.state.nama});
-    }else if(this.state.nama == "ilham"){
+    this.setState({
+      loading: "Loading ...",
+    })
+    if(this.state.email == ""){
+      alert("Email Tidak Boleh Kosong")
       this.setState({
-        condition_user: ""
+        loading: "Login"
       })
-    }else if(this.state.password == "test"){
+    }else if(this.state.password == ""){
+      alert("Password Tidak Boleh Kosong")
       this.setState({
-        condition_pass: ""
-      })
-    }else if(this.state.nama.length == 0 && this.state.password.length == 0){
-      this.setState({
-        condition_user: "Username Tidak Boleh kosong",
-        condition_pass: "password Tidak Boleh Kosong"
-      })
-    }else if(this.state.nama != "ilham" && this.state.nama != "test"){
-      this.setState({
-        condition_user: "Username Salah",
-        condition_pass: "Password Salah"
-      })
-    }else if(this.state.nama != "ilham" && this.state.password == "test"){
-      this.setState({
-        condition_user: "Username Salah"
-      })
-    }else if(this.state.password != "test" && this.state.nama == "ilham"){
-      this.setState({
-        condition_pass: "Password Salah"
+        loading: "Login"
       })
     }else{
-      alert(console.error())
+    firebase.
+      auth().signInWithEmailAndPassword(this.state.email, this.state.password)
+      .then((email) => {
+        this.props.navigation.navigate('Main', {email: this.state.email});
+      }).catch((error) => 
+        alert("Email Atau Password Salah")
+      )
     }
   }
+
+  Daftar = () => {
+    this.setState({
+      loading_daftar: "Loading ...",
+    })
+    if(this.state.password_daftar != this.state.re_password){
+      this.setState({
+        loading_daftar: "Daftar"
+      })
+      alert("Password Tidak Sama")
+    }else{
+      firebase.auth().createUserWithEmailAndPassword(this.state.email_daftar, this.state.password_daftar)
+      .then(() => {
+        this.setState({
+          state_login: 1,
+          notification: "Success",
+          loading_daftar: "Daftar"
+        })
+      }).catch(function(error){
+        this.setState({
+          loading_daftar: "Daftar"
+        })
+        alert("Something Wrong")
+      })
+    }
+  }
+  
 
   static navigationOptions = {
     header: null
@@ -72,30 +107,24 @@ class Login extends React.Component {
       <View style={styles.container}>
         {this.state.state_login == 1 ? (
             <View style={styles.item_container}>
+              <Text style = {styles.text_notification}>{this.state.notification}</Text>
               <Text style={styles.text_login}>Login</Text>
-              <TextInput style={styles.TextInput} placeholder="Input Nama Anda" onChangeText={(nama) => this.setState({nama})} />
+              <TextInput style={styles.TextInput} placeholder="Input Email Anda" onChangeText={(email) => this.setState({email})} />
               <Text style={{color: "red"}}>{this.state.condition_user}</Text>
               <TextInput style={styles.TextInput} placeholder="Input Password Anda" secureTextEntry onChangeText={(password) => this.setState({password})} />
               <Text style={{color: "red"}}>{this.state.condition_pass}</Text>
               <View style={styles.container_button}>
-                <Button style={styles.buttonLogin} title="login" color="rgb(251, 218, 0)" onPress={() => this.cekUser()}/>
-                <Text style={{color: "white", fontSize: 12, marginVertical: 15}}>Belum Punya Akun ? Daftar <Text onPress={() => this.setState({state_login: 2})}>Disini !</Text></Text>
+              <Button style={styles.buttonLogin} title={this.state.loading_login} color={this.state.color} onPress={() => this.cekUser()}/>
+              <Text style={{color: "white", fontSize: 12, marginVertical: 15}}>Belum Punya Akun ? Daftar <Text onPress={() => this.setState({state_login: 2})}>Disini !</Text></Text>
               </View>
             </View>
           ):(
             <View style={styles.item_daftar}>
                 <Text style={styles.text_login}>Daftar</Text>
-                <TextInput style={styles.TextInput} placeholder="Input Nama Anda" onChangeText={(nama_daftar) => this.setState({nama_daftar})} />
                 <TextInput style={styles.TextInput} placeholder="Input Email Anda" onChangeText={(email_daftar) => this.setState({email_daftar})} />
                 <TextInput style={styles.TextInput} placeholder="Input Password Anda" secureTextEntry onChangeText={(password_daftar) => this.setState({password_daftar})} />
-                <TextInput style={styles.TextInput1} placeholder="Re Enter Password" secureTextEntry onChangeText={(password_daftar) => this.setState({password_daftar})} />
-                <TextInput style={styles.textarea} multiline={true} numberOfLines={2} placeholder="Masukan Alamat Anda" />
-                <Picker style={styles.TextInput} itemStyle={{fontSize: 10, backgroundColor: "blue"}} placeholder="Pertanyaan " >
-                  <Picker.Item  label = "Siapa Nama Guru Favorit Anda" value = "Siapa Nama Guru Favorit Anda" />
-                  <Picker.Item  label = "Siapa Peliharaan pertama anda" value = "Siapa Peliharaan pertama anda" />
-                </Picker>
-                <TextInput style={styles.TextInput2} placeholder="Pilihan Anda ?" onChangeText={(jawaban_pilihan) => this.setState({jawaban_pilihan})} />
-                <Button style={{width: "30%", borderRadius: 15, marginTop: 10}} title="Daftar" color="rgb(251, 218, 0)"/> 
+                <TextInput style={styles.TextInput1} placeholder="Re Enter Password" secureTextEntry onChangeText={(re_password) => this.setState({re_password})} />
+                <Button style={{width: "30%", borderRadius: 15, marginTop: 10}} onPress={() => this.Daftar()} title={this.state.loading_daftar} color="rgb(251, 218, 0)"/> 
             </View>
           )
         }
@@ -137,8 +166,7 @@ const styles = StyleSheet.create({
     borderRadius: 2
   },
   TextInput2:{
-    width: "80%", 
-     
+    width: "80%",
     backgroundColor: "white",
     marginVertical: 15,
   },
@@ -149,6 +177,10 @@ const styles = StyleSheet.create({
     marginTop: 15,
     marginBottom: 15,
     borderRadius: 2
+  },
+  text_notification:{
+    color: "#0eff0e",
+    fontSize: 16
   },
   textarea:{
     backgroundColor : "white",
