@@ -1,7 +1,7 @@
 /* eslint-disable semi */
 /* eslint-disable prettier/prettier */
 import React, { Component } from "react";
-import { StyleSheet, View, Text, Image, TextInput, Button, ActivityIndicator, Picker } from "react-native";
+import { StyleSheet, View, AsyncStorage, Text, Image, TextInput, Button, ActivityIndicator, Picker } from "react-native";
 import { createStackNavigator, createAppContainer } from "react-navigation";
 import Main from './Main';
 import * as firebase from "firebase";
@@ -18,13 +18,9 @@ class Login extends React.Component {
       email_daftar: "",
       password_daftar: "",
       re_password: "",
-      alamat:"",
       state_login: 1,
       condition_user: "",
       condition_pass: "",
-      pilihan: ["Siapa Nama Guru Favorit Anda","Siapa Peliharaan pertama anda"],
-      hasil_pilihan: "",
-      jawaban_pilihan: "",
       errorMessage: null,
       color: "rgb(251, 218, 0)",
       loading_login: "Login",
@@ -33,13 +29,37 @@ class Login extends React.Component {
     };
   }
 
+  saveData(){
+    let email = this.state.email;
+    let data = {
+            email: email,
+        }
+    AsyncStorage.setItem('email', JSON.stringify(data));
+}
+
   UNSAFE_componentWillMount = () => {
     const firebaseConfig = {
       apiKey: "AIzaSyAdOYxRpefL-O9Dqy7P_D9Ja4fBNtuunes",
       authDomain: "derekin-23fce.firebaseapp.com"
     }
-
     firebase.initializeApp(firebaseConfig);
+
+    AsyncStorage.getItem('email', (error, result) => {
+      if(result) {
+        let resultParsed = JSON.parse(result)
+        this.setState({
+            email: resultParsed.email,
+        });
+        this.props.navigation.navigate('Main', {email: resultParsed.email});
+        alert(resultParsed.email)
+      }
+    });
+  }
+
+  componentDidMount = () => {
+    this.setState({
+      email: "ok",
+  });
   }
 
   cekUser = () => {
@@ -59,8 +79,13 @@ class Login extends React.Component {
     }else{
     firebase.
       auth().signInWithEmailAndPassword(this.state.email, this.state.password)
-      .then((email) => {
-        this.props.navigation.navigate('Main', {email: this.state.email});
+      .then(() => {
+        this.setState({
+          email: "",
+          password: ""
+        })
+        this.props.navigation.navigate('Main');
+        this.saveData();
       }).catch((error) => 
         alert("Email Atau Password Salah")
       )

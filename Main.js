@@ -1,16 +1,29 @@
 /* eslint-disable prettier/prettier */
 import React, { Component } from "react";
-import { StyleSheet, View, Text, Image, TextInput, Button } from "react-native";
+import { StyleSheet, AsyncStorage, View, Text, Image, TextInput, Button } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
 export default class Main extends React.Component {
     constructor(props){
         super(props)
         this.state = {
-            email: this.props.navigation.state.params.email,
+            email: "",
             latitude: null,
             longitude: null,
             error:null,
+        }
+    }
+
+    async LogOut(email) {
+        try{
+            await AsyncStorage.removeItem('email')
+            .then(() => {
+                this.props.navigation.navigate('Login')
+            })
+            return true;
+        }
+        catch(exception){
+            return false
         }
     }
     
@@ -18,8 +31,17 @@ export default class Main extends React.Component {
         header: null
     };
 
+    UNSAFE_componentWillMount = () => {
+        AsyncStorage.getItem('email', (error, result) => {
+            if(result) {
+              let resultParsed = JSON.parse(result)
+              this.setState({
+                  email: resultParsed.email,
+              })
+            }
+          });
+    }
     componentDidMount = () =>{
-       
     }
 
     render(){
@@ -27,6 +49,7 @@ export default class Main extends React.Component {
             <View style={styles.container}>
                 <ScrollView>
                     <Text>{this.state.email}</Text>
+                    <Button onPress={() => this.LogOut()} title="Logout" />
                 </ScrollView>
             </View>
         )
