@@ -1,19 +1,39 @@
-import React from 'react'
-import { View, Text, ActivityIndicator, StyleSheet } from 'react-native'
-export default class Loading extends React.Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text>Loading</Text>
-        <ActivityIndicator size="large" />
-      </View>
-    )
-  }
+/* eslint-disable prettier/prettier */
+import React, { Component } from "react";
+import { StyleSheet, ScrollView, View, Text, TextInput, Button, ActivityIndicator, StatusBar } from "react-native";
+import AsyncStorage from '@react-native-community/async-storage';
+import { createSwitchNavigator, createStackNavigator, createAppContainer } from 'react-navigation';
+
+export default class AuthLoadingScreen extends Component {
+    constructor() {
+      super();
+      this._bootstrapAsync();
+    }
+
+    // Fetch the token from storage then navigate to our appropriate place
+    _bootstrapAsync = async () => {
+      const userToken = await AsyncStorage.getItem('userToken');
+
+      // This will switch to the App screen or Auth screen and this loading
+      // screen will be unmounted and thrown away.
+      this.props.navigation.navigate(userToken ? 'App' : 'Auth');
+    };
+
+    // Render any loading content that you like here
+    render() {
+      return (
+        <View style={styles.container}>
+          <ActivityIndicator />
+          <StatusBar barStyle="default" />
+        </View>
+      );
+    }
 }
+
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  }
-})
+    container: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+});

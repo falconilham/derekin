@@ -1,15 +1,31 @@
 /* eslint-disable semi */
 /* eslint-disable prettier/prettier */
 import React, { Component } from "react";
-import { StyleSheet, View, AsyncStorage, Text, Image, TextInput, Button, ActivityIndicator, Picker } from "react-native";
-import { createStackNavigator, createAppContainer } from "react-navigation";
+import { StyleSheet, View, Text, Image, TextInput, Button, ActivityIndicator, ImageBackground } from "react-native";
+import { createSwitchNavigator, createStackNavigator, createAppContainer } from 'react-navigation';
 import Main from './Main';
-import * as firebase from "firebase";
+import Derek from './Derek';
+import About from './About';
+import AsyncStorage from '@react-native-community/async-storage';
+import Loading from './Loading';
+import firebase from "./Firebase";
+import Background from './image/bg.jpg';
 //import firebase from './react-native-firebase';
 import { ScrollView } from "react-native-gesture-handler";
 
+
+
 class Login extends React.Component {
   constructor() {
+    AsyncStorage.getItem('email', (error, result) => {
+      if(result) {
+        let resultParsed = JSON.parse(result)
+        this.setState({
+            email: resultParsed.email,
+        });
+        this.props.navigation.navigate('Main');
+      }
+    });
     super();
     this.state = {
       nama: "",
@@ -35,25 +51,10 @@ class Login extends React.Component {
             email: email,
         }
     AsyncStorage.setItem('email', JSON.stringify(data));
-}
+  } 
 
   UNSAFE_componentWillMount = () => {
-    const firebaseConfig = {
-      apiKey: "AIzaSyAdOYxRpefL-O9Dqy7P_D9Ja4fBNtuunes",
-      authDomain: "derekin-23fce.firebaseapp.com"
-    }
-    firebase.initializeApp(firebaseConfig);
-
-    AsyncStorage.getItem('email', (error, result) => {
-      if(result) {
-        let resultParsed = JSON.parse(result)
-        this.setState({
-            email: resultParsed.email,
-        });
-        this.props.navigation.navigate('Main', {email: resultParsed.email});
-        alert(resultParsed.email)
-      }
-    });
+    
   }
 
   componentDidMount = () => {
@@ -62,7 +63,7 @@ class Login extends React.Component {
   });
   }
 
-  cekUser = () => {
+  cekUser = async () => {
     this.setState({
       loading: "Loading ...",
     })
@@ -71,21 +72,12 @@ class Login extends React.Component {
       this.setState({
         loading: "Login"
       })
-    }else if(this.state.password == ""){
-      alert("Password Tidak Boleh Kosong")
-      this.setState({
-        loading: "Login"
-      })
     }else{
     firebase.
       auth().signInWithEmailAndPassword(this.state.email, this.state.password)
       .then(() => {
-        this.setState({
-          email: "",
-          password: ""
-        })
-        this.props.navigation.navigate('Main');
         this.saveData();
+        this.props.navigation.navigate('AuthLoading');
       }).catch((error) => 
         alert("Email Atau Password Salah")
       )
@@ -129,7 +121,7 @@ class Login extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <ImageBackground imageStyle={{ opacity: 0.5 }} blurRadius={1} source={require('./image/bg.jpg')} style={styles.container}>
         {this.state.state_login == 1 ? (
             <View style={styles.item_container}>
               <Text style = {styles.text_notification}>{this.state.notification}</Text>
@@ -144,23 +136,23 @@ class Login extends React.Component {
               </View>
             </View>
           ):(
-            <View style={styles.item_daftar}>
+            <ImageBackground imageStyle={{ opacity: 0.5 }} blurRadius={1} source={require('./image/bg.jpg')} style={styles.item_daftar}>
                 <Text style={styles.text_login}>Daftar</Text>
                 <TextInput style={styles.TextInput} placeholder="Input Email Anda" onChangeText={(email_daftar) => this.setState({email_daftar})} />
                 <TextInput style={styles.TextInput} placeholder="Input Password Anda" secureTextEntry onChangeText={(password_daftar) => this.setState({password_daftar})} />
                 <TextInput style={styles.TextInput1} placeholder="Re Enter Password" secureTextEntry onChangeText={(re_password) => this.setState({re_password})} />
                 <Button style={{width: "30%", borderRadius: 15, marginTop: 10}} onPress={() => this.Daftar()} title={this.state.loading_daftar} color="rgb(251, 218, 0)"/> 
-            </View>
+            </ImageBackground>
           )
         }
-      </View>
+      </ImageBackground>
     );
   }
 }
 
 const styles = StyleSheet.create({
   container:{
-    backgroundColor: "#004689",
+    backgroundColor: "black",
     color: "white",
     justifyContent: 'center', //Centered vertically
     alignItems: 'center', // Centered horizontally
@@ -214,7 +206,8 @@ const styles = StyleSheet.create({
   },
   buttonLogin:{
     borderRadius: 15,
-    margin: 10
+    margin: 10,
+    width: "100%"
   },
   text_login:{
     color: "white", 
@@ -223,13 +216,16 @@ const styles = StyleSheet.create({
   }
 });
 
-const AppNavigator = createStackNavigator({
-  Login: {
-    screen: Login
-  },
-  Main: {
-    screen: Main
-  }
-});
+const AppStack = createStackNavigator({ Main: Main, Derek: Derek, About: About});
+const AuthStack = createStackNavigator({ SignIn: Login });
 
-export default createAppContainer(AppNavigator);
+export default createAppContainer(createSwitchNavigator(
+  {
+    AuthLoading: Loading,
+    App: AppStack,
+    Auth: AuthStack,
+  },
+  {
+    initialRouteName: 'AuthLoading',
+  }
+));
