@@ -2,11 +2,12 @@
 import React, { Component } from "react";
 import { StyleSheet, ScrollView, View, Text, TextInput, Button, ActivityIndicator, StatusBar } from "react-native";
 import AsyncStorage from '@react-native-community/async-storage';
+import firebase from "./Firebase";
 import { createSwitchNavigator, createStackNavigator, createAppContainer } from 'react-navigation';
 
 export default class AuthLoadingScreen extends Component {
-    constructor() {
-      super();
+    constructor(props) {
+      super(props);
       this._bootstrapAsync();
     }
 

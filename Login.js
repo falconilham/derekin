@@ -73,14 +73,14 @@ class Login extends React.Component {
         loading: "Login"
       })
     }else{
-    firebase.
-      auth().signInWithEmailAndPassword(this.state.email, this.state.password)
-      .then(() => {
-        this.saveData();
-        this.props.navigation.navigate('AuthLoading');
-      }).catch((error) => 
-        alert("Email Atau Password Salah")
-      )
+      firebase.
+        auth().signInWithEmailAndPassword(this.state.email, this.state.password)
+        .then(() => {
+          this.saveData();
+          this.props.navigation.navigate('AuthLoading');
+        }).catch((error) => 
+          alert("Email Atau Password Salah")
+        )
     }
   }
 
