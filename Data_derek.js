@@ -22,9 +22,7 @@ export default class Data_derek extends React.Component{
         const data = this.state
         return(
             <View style={styles.container}>
-                <View style={styles.item_header}>
-                    
-                </View>
+                <View style={styles.item_header}></View>
                 <View style={styles.item_footer}>
                     <View style={styles.item_data}>
                         <Text style={{textAlign: "center"}}>{Data[data.id].nama}</Text>
