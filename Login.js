@@ -5,6 +5,7 @@ import { StyleSheet, View, Text, Image, TextInput, Button, ActivityIndicator, Im
 import { createSwitchNavigator, createStackNavigator, createAppContainer } from 'react-navigation';
 import Main from './Main';
 import Derek from './Derek';
+import Data_derek from './Data_derek';
 import About from './About';
 import AsyncStorage from '@react-native-community/async-storage';
 import Loading from './Loading';
@@ -216,7 +217,7 @@ const styles = StyleSheet.create({
   }
 });
 
-const AppStack = createStackNavigator({ Main: Main, Derek: Derek, About: About});
+const AppStack = createStackNavigator({ Main: Main, Derek: Derek, About: About, Data: Data_derek});
 const AuthStack = createStackNavigator({ SignIn: Login });
 
 export default createAppContainer(createSwitchNavigator(
