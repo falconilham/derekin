@@ -20,9 +20,9 @@ export default class About extends React.Component{
         return(
             <View style={styles.container}>
                 <View style={styles.item_header}>
-                    
-                        <Image source={require('./image/profile.jpg')} style={{maxWidth: "10%", borderRadius: 50 , borderWidth: 1}} />
-                    
+                    <View style={{ borderWidth: 1, width: "30%", height: "50%", backgroundColor: "blue"}}>
+                        <Image source={require('./image/profile.jpg')} style={{maxWidth: "100%", maxHeight: "100%"}}/>
+                    </View>
                 </View>
                 <View style={styles.item_footer}>
                     <View style={styles.item_data}>

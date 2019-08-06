@@ -5,6 +5,7 @@ import { StyleSheet, View, Text, Image, TextInput, Button, ActivityIndicator, Im
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import Data from './derek.json';
 import Phone from './image/phone.png';
+import derekin from './derekin';
 
 export default class Data_derek extends React.Component{
     static navigationOptions = ({ navigation }) => {
@@ -22,16 +23,18 @@ export default class Data_derek extends React.Component{
         const data = this.state
         return(
             <View style={styles.container}>
-                <View style={styles.item_header}></View>
+                <View style={styles.item_header}>
+                    <Image source={derekin[data.id].image} style={{maxHeight: "100%", maxWidth: "100%"}}/>
+                </View>
                 <View style={styles.item_footer}>
                     <View style={styles.item_data}>
-                        <Text style={{textAlign: "center"}}>{Data[data.id].nama}</Text>
+                        <Text style={{textAlign: "center"}}>{derekin[data.id].nama}</Text>
                     </View>
                     <View style={styles.item_data}>
-                        <Text style={{textAlign: "justify"}}>{Data[data.id].lokasi}</Text>
+                        <Text style={{textAlign: "justify"}}>{derekin[data.id].lokasi}</Text>
                     </View>
                     <View>
-                        <TouchableOpacity style={{borderWidth:1, borderRadius: 50, padding:10}} onPress={() => Linking.openURL(`tel:${Data[data.id].phone}`)}>
+                        <TouchableOpacity style={{borderWidth:1, borderRadius: 50, padding:10}} onPress={() => Linking.openURL(`tel:${derekin[data.id].phone}`)}>
                             <Image source={require('./image/phone.png')} />
                         </TouchableOpacity>
                     </View>
@@ -51,7 +54,9 @@ const styles = StyleSheet.create({
     item_header:{
         width: "100%",
         flex:1,
-        backgroundColor: "#0cb3ca"
+        backgroundColor: "#0cb3ca",
+        justifyContent: "center",
+        alignItems: "center"
     },
     item_footer:{
         flex:2,

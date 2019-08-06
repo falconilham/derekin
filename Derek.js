@@ -43,11 +43,14 @@ const styles = StyleSheet.create({
         flex:1,
         flexDirection:"column",
         alignSelf:"center",
+        alignItems: "center",
         borderWidth: 10,
         marginVertical: 20,
         borderColor: "white",
         backgroundColor: "white",
-        borderRadius: 13
+        borderRadius: 13,
+        minHeight: 200,
+        justifyContent: "center"
     },
     item:{
         borderBottomWidth: 1,
