@@ -9,6 +9,8 @@ import React, { Component } from "react";
 import { StyleSheet, View, Text, Image, TextInput, Button, ActivityIndicator, ImageBackground } from "react-native";
 import { createSwitchNavigator, createStackNavigator, createAppContainer } from 'react-navigation';
 import AsyncStorage from '@react-native-community/async-storage';
+import Data from './Data_about';
+import { ScrollView } from "react-native-gesture-handler";
 
 export default class About extends React.Component{
     static navigationOptions = ({ navigation }) => {
@@ -20,32 +22,25 @@ export default class About extends React.Component{
         return(
             <View style={styles.container}>
                 <View style={styles.item_header}>
-                    <View style={{ borderWidth: 1, width: "30%", height: "50%", backgroundColor: "blue"}}>
+                    <View style={styles.Image_foto}>
                         <Image source={require('./image/profile.jpg')} style={{maxWidth: "100%", maxHeight: "100%"}}/>
                     </View>
                 </View>
-                <View style={styles.item_footer}>
-                    <View style={styles.item_data}>
-                        <Text style={styles.text_data}>Nama</Text>
-                        <Text style={styles.text_data}>:</Text>
-                        <Text style={styles.text_data}>Rafly</Text>
-                    </View>
-                    <View style={styles.item_data}>
-                        <Text style={styles.text_data}>Kelas</Text>
-                        <Text style={styles.text_data}>:</Text>
-                        <Text style={styles.text_data}>Gatau</Text>
-                    </View>
-                    <View style={styles.item_data}>
-                        <Text style={styles.text_data}>Kelas</Text>
-                        <Text style={styles.text_data}>:</Text>
-                        <Text style={styles.text_data}>Gatau</Text>
-                    </View>
-                    <View style={styles.item_data}>
-                        <Text style={styles.text_data}>Kelas</Text>
-                        <Text style={styles.text_data}>:</Text>
-                        <Text style={styles.text_data}>Gatau</Text>
-                    </View>
-                </View>
+                <ScrollView style={styles.item_footer}>
+                    {Data.map((item, i) => {
+                        return(
+                            <View style={styles.item_data} key={i}>
+                                <View style={styles.image_wrapper}>
+                                    <Image source={item.image} style={{maxWidth : "100%", maxHeight: "80%", width: "100%", height: "80%"}} />
+                                </View>
+                                <View style={{flexDirection: "column", justifyContent: "space-around"}}>
+                                    <Text style={styles.item_key}>{item.key}</Text>
+                                    <Text>{item.value}</Text>
+                                </View>
+                            </View>
+                        )
+                    })}
+                </ScrollView>
             </View>
         );
     }
@@ -59,26 +54,41 @@ const styles = StyleSheet.create({
     },
     item_header:{
         width: "100%",
-        flex:1,
+        height: "30%",
         alignItems: "center",
         justifyContent: "center",
         backgroundColor: "#0cb3ca"
     },
     item_footer:{
-        flex:2,
         width: "100%",
-        flexDirection: "column",
-        justifyContent: "space-around",
-        alignItems: "center"
+        padding: 10
     },
     item_data:{
-        width: "80%",
-        borderColor: "grey",
-        display: "flex",
+        width: "100%",
+        maxHeight: "30%",
+        marginVertical: "5%",
+        alignSelf: "center",
         flexDirection: "row",
-        justifyContent: "space-between"
     },
     text_data:{
         fontSize: 20
+    },
+    Image_foto:{
+        borderWidth: 1, 
+        width: "30%", 
+        height: "55%", 
+        backgroundColor: "blue", 
+        overflow: "hidden", 
+        borderRadius: 50,
+    },
+    image_wrapper:{
+        width: 60,
+        height: 120,
+        alignItems: "center",
+        marginRight: 10
+    },
+    item_key:{
+        fontSize: 17,
+        fontWeight: "bold"
     }
 })

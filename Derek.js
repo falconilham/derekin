@@ -19,7 +19,7 @@ export default class Derek extends React.Component{
                     {Data.map((item, i) => {
                         return(
                             <TouchableOpacity style={styles.item_container} key={i} onPress={() => this.props.navigation.navigate('Data', {id: i})}>
-                                <Text style={styles.item}>{item.nama}</Text>
+                                <Text style={styles.item_nama}>{item.nama}</Text>
                                 <Text style={styles.item}>{item.lokasi}</Text>
                             </TouchableOpacity>
                         )
@@ -39,7 +39,6 @@ const styles = StyleSheet.create({
     },
     item_container:{
         width: "80%",
-        height: "30%",
         flex:1,
         flexDirection:"column",
         alignSelf:"center",
@@ -49,11 +48,17 @@ const styles = StyleSheet.create({
         borderColor: "white",
         backgroundColor: "white",
         borderRadius: 13,
-        minHeight: 200,
-        justifyContent: "center"
+        maxHeight: 120,
+        justifyContent: 'space-between'
     },
     item:{
         borderBottomWidth: 1,
         borderBottomColor: "grey",
+    },
+    item_nama:{
+        fontSize: 15,
+        fontWeight: "bold",
+        alignSelf: "center",
+        textAlign: "center",
     }
 })
