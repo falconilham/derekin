@@ -23,18 +23,17 @@ export default class Data_derek extends React.Component{
         const data = this.state
         return(
             <View style={styles.container}>
+                <Text>{derekin[data.id].nama}</Text>
                 <View style={styles.item_header}>
-                    <Image source={derekin[data.id].image} style={{maxHeight: "100%", maxWidth: "100%"}}/>
-                </View>
-                <View style={styles.item_footer}>
-                    <View style={styles.item_data}>
-                        <Text style={{textAlign: "center"}}>{derekin[data.id].nama}</Text>
-                    </View>
-                    <View style={styles.item_data}>
-                        <Text style={{textAlign: "justify"}}>{derekin[data.id].lokasi}</Text>
+                    <View>
+                        <Text style={styles.font}>Whatsapp</Text>
+                        <TouchableOpacity style={styles.phone} onPress={() => Linking.openURL('whatsapp://send?text=hello&phone='+ derekin[data.id].phone)}>
+                            <Image source={require('./image/phone.png')} />
+                        </TouchableOpacity>
                     </View>
                     <View>
-                        <TouchableOpacity style={{borderWidth:1, borderRadius: 50, padding:10}} onPress={() => Linking.openURL(`tel:${derekin[data.id].phone}`)}>
+                        <Text style={styles.font}>Telephone</Text>
+                        <TouchableOpacity style={styles.phone} onPress={() => Linking.openURL(`tel:${derekin[data.id].phone}`)}>
                             <Image source={require('./image/phone.png')} />
                         </TouchableOpacity>
                     </View>
@@ -54,8 +53,8 @@ const styles = StyleSheet.create({
     item_header:{
         width: "100%",
         flex:1,
-        backgroundColor: "#0cb3ca",
-        justifyContent: "center",
+        backgroundColor: "#00b140",
+        justifyContent: "space-around",
         alignItems: "center"
     },
     item_footer:{
@@ -70,5 +69,23 @@ const styles = StyleSheet.create({
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.8,
+    },
+    phone:{
+        shadowColor: "#000",
+        shadowOffset: {
+	        width: 0,
+	        height: 12,
+        },
+        shadowOpacity: 0.58,
+        shadowRadius: 16.00,
+        borderRadius: 50,
+        borderWidth: 1,
+        borderColor: "grey", 
+        padding:10,
+        elevation: 24,
+        backgroundColor: "#00b140" 
+    },
+    font:{
+        textAlign: "center"
     }
 })

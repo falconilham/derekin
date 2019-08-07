@@ -23,7 +23,7 @@ export default class About extends React.Component{
             <View style={styles.container}>
                 <View style={styles.item_header}>
                     <View style={styles.Image_foto}>
-                        <Image source={require('./image/profile.jpg')} style={{maxWidth: "100%", maxHeight: "100%"}}/>
+                        <Image source={require('./image/encek.jpg')} style={{maxWidth: "100%", maxHeight: "100%"}}/>
                     </View>
                 </View>
                 <ScrollView style={styles.item_footer}>
