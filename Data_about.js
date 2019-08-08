@@ -25,7 +25,7 @@ var Data = [
     },
     {
         key: "Tempat & Tanggal Lahir",
-        value: "Depok, 24-04-1995",
+        value: "Depok & 24-04-1995",
         image: require('./image/boy.png')
     },
 ]

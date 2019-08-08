@@ -25,13 +25,13 @@ export default class Data_derek extends React.Component{
             <View style={styles.container}>
                 <Text>{derekin[data.id].nama}</Text>
                 <View style={styles.item_header}>
-                    <View>
+                    <View style={styles.item_phone}>
                         <Text style={styles.font}>Whatsapp</Text>
                         <TouchableOpacity style={styles.phone} onPress={() => Linking.openURL('whatsapp://send?text=hello&phone='+ derekin[data.id].phone)}>
                             <Image source={require('./image/phone.png')} />
                         </TouchableOpacity>
                     </View>
-                    <View>
+                    <View style={styles.item_phone}>
                         <Text style={styles.font}>Telephone</Text>
                         <TouchableOpacity style={styles.phone} onPress={() => Linking.openURL(`tel:${derekin[data.id].phone}`)}>
                             <Image source={require('./image/phone.png')} />
@@ -71,21 +71,24 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.8,
     },
     phone:{
-        shadowColor: "#000",
+        shadowColor: "#fff",
         shadowOffset: {
-	        width: 0,
+	        width: 12,
 	        height: 12,
         },
         shadowOpacity: 0.58,
         shadowRadius: 16.00,
         borderRadius: 50,
         borderWidth: 1,
-        borderColor: "grey", 
+        borderColor: "white", 
         padding:10,
         elevation: 24,
         backgroundColor: "#00b140" 
     },
     font:{
         textAlign: "center"
+    },
+    item_phone:{
+        justifyContent: "space-between"
     }
 })
